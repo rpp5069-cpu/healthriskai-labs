@@ -1,0 +1,5 @@
+# Line endings: keep shell scripts LF and PowerShell scripts CRLF on every OS
+*.sh   text eol=lf
+*.ps1  text eol=crlf
+*.yaml text eol=lf
+*.md   text eol=lf

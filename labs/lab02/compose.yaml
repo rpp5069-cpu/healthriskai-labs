@@ -1,0 +1,31 @@
+# Lab 2 test run: two containers that talk to each other over a private network.
+#   web     serves the page in ./site (mounted read-only, the lab folder only)
+#   checker waits for web, fetches the page over the network, prints it, and exits
+#
+# Run from this folder:   docker compose up -d
+# Look at it:             docker compose ps    |  docker compose logs checker
+# Open in a browser:      http://localhost:8080
+# Stop and remove:        docker compose down
+
+name: lab02
+
+services:
+  web:
+    image: nginx:1.28-alpine
+    ports:
+      - "127.0.0.1:8080:80"          # only reachable from your own computer
+    volumes:
+      - ./site:/usr/share/nginx/html:ro   # mount just this lab's folder, read-only
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost/"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  checker:
+    image: busybox:1.36
+    depends_on:
+      web:
+        condition: service_healthy
+    command: ["sh", "-c", "echo 'checker: fetching http://web/ over the lab02 network'; wget -qO- http://web/ | grep -o 'Docker is working[^<]*'"]
+    restart: "no"

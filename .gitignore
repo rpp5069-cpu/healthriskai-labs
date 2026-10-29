@@ -1,0 +1,12 @@
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local check output (submit it, do not commit it)
+*-check.txt
+
+# Secrets and local settings (used from Lab 3 on)
+.env
+secrets/
