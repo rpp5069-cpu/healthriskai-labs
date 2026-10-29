@@ -33,7 +33,8 @@ what you should see after each step.
 You need these files on your computer from Lab 2 on. Pick one way:
 
 - **Download ZIP (no Git needed):** on this page, click the green **Code** button, then **Download ZIP**. Unzip it
-  into a folder you'll find again, for example `Documents\csc894\healthriskai-labs`.
+  into `Documents\csc894` and rename the `healthriskai-labs-main` folder to `healthriskai-labs`.
+  [Lab 2, Part D](labs/lab02/README.md#part-d-get-the-course-files) walks you through it.
 - **Git clone (recommended):** install Git from <https://git-scm.com/downloads>, then in a terminal run:
 
   ```bash

@@ -13,6 +13,24 @@ press the setup key shown on screen (often `F2`, `F10`, `Del`, or `Esc`), enable
 **"WSL 2 installation is incomplete" or "Docker Desktop requires a newer WSL kernel" (Windows)**
 Open PowerShell as Administrator and run `wsl --update`, then restart your computer and start Docker Desktop again.
 
+**"Enter new UNIX username" prompt, or "Catastrophic failure ... Wsl/Service/E_UNEXPECTED" (Windows)**
+This happens when `wsl --install` is run without `--no-distribution` on a computer that already has WSL: Windows
+installs Ubuntu as well and asks you to create a Linux user. Docker doesn't need Ubuntu.
+- If the prompt accepts a username and password and finishes, that's fine: type `exit` and carry on with Lab 2.
+- If it keeps repeating *Catastrophic failure* and asking for a username again, remove the half-installed Ubuntu:
+  1. Press `Ctrl + C`, then close that window.
+  2. Open PowerShell **as administrator** and run, one at a time:
+
+     ```powershell
+     wsl --shutdown
+     wsl --update
+     wsl --unregister Ubuntu
+     wsl --list --verbose
+     ```
+
+     The last command should list only `docker-desktop`. **Never** unregister `docker-desktop`; Docker runs on it.
+  3. Start Docker Desktop, wait for **Engine running**, and continue with Part C in a regular PowerShell window.
+
 **I use VirtualBox (Windows)**
 Recent VirtualBox versions run alongside Docker Desktop on WSL 2. Don't run VirtualBox machines while the labs are
 running; they compete for memory.
@@ -48,6 +66,20 @@ A container with that name already exists. Remove it with `docker rm -f lab02-we
 **`docker run hello-world` hangs or says it can't pull the image**
 Check your internet connection. On a campus or work network that blocks Docker Hub, try another network such as
 home Wi-Fi.
+
+**`toomanyrequests: You have reached your unauthenticated pull rate limit`**
+Docker Hub limits downloads for people who aren't signed in, and a shared campus network can reach that limit
+quickly. Create a free account at <https://hub.docker.com>, then sign in from Docker Desktop (top-right **Sign in**)
+or run `docker login`. Wait a few minutes and run the command again.
+
+**`ls` shows a table with no file names (Windows)**
+The PowerShell window is too narrow, so it drops the **Name** column. Widen or maximize the window, or run
+`ls -Name` to list just the names.
+
+**I unzipped the files but can't find `labs` or `scripts`**
+GitHub's ZIP creates a folder named `healthriskai-labs-main`, and Windows sometimes nests it inside another folder
+of the same name. Open the folders until you see `docs`, `labs`, and `scripts` side by side; that's the repository
+folder. Rename it to `healthriskai-labs` so the lab commands match.
 
 ## Running the environment check
 
