@@ -396,4 +396,4 @@ You should see a list of **PASS** lines ending with **Your computer is ready for
 | `docker compose logs SERVICE` | Show one service's output |
 | `docker compose down` | Stop and remove this project's containers and network |
 
-Next: [Lab 3](../lab03/README.md).
+Next: Lab 3.

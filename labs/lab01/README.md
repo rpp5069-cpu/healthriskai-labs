@@ -17,4 +17,4 @@ Compose before you install anything.
 > These are third-party videos and may use different tool versions than this course. When they differ, follow the
 > commands in the lab instructions.
 
-Next: [Lab 2](../lab02/README.md).
+Next: Lab 2.

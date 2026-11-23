@@ -11,12 +11,12 @@ Docker.
 
 | Lab | What you do | Folder |
 |---|---|---|
-| Lab 1 | Watch two short videos on Docker and Docker Compose | [`labs/lab01`](labs/lab01/README.md) |
-| Lab 2 | Install Docker on your computer and complete a test run | [`labs/lab02`](labs/lab02/README.md) |
-| Lab 3 | Start the course infrastructure and set up Kafka and Spark | [`labs/lab03`](labs/lab03/README.md) (coming soon) |
+| Lab 1 | Watch two short videos on Docker and Docker Compose | `labs/lab01` |
+| Lab 2 | Install Docker on your computer and complete a test run | `labs/lab02` |
 
-Work through the labs in order. Each lab's README has step-by-step instructions, the exact commands to type, and
-what you should see after each step.
+Open each lab from the link your instructor posts in Canvas when the lab opens. Work through the labs in order.
+Each lab's README has step-by-step instructions, the exact commands to type, and what you should see after each
+step.
 
 ## What your computer needs
 
@@ -34,7 +34,7 @@ You need these files on your computer from Lab 2 on. Pick one way:
 
 - **Download ZIP (no Git needed):** on this page, click the green **Code** button, then **Download ZIP**. Unzip it
   into `Documents\csc894` and rename the `healthriskai-labs-main` folder to `healthriskai-labs`.
-  [Lab 2, Part D](labs/lab02/README.md#part-d-get-the-course-files) walks you through it.
+  Lab 2, Part D walks you through it.
 - **Git clone (recommended):** install Git from <https://git-scm.com/downloads>, then in a terminal run:
 
   ```bash
