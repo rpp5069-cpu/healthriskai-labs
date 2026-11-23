@@ -105,3 +105,46 @@ an 8 GB computer.
 
 **WARN: free disk space is low**
 Delete large files you no longer need or empty the trash. Docker images for the later labs need about 30 GB.
+
+## Labs 3 and 4: Kafka and Spark
+
+**`no configuration file provided: not found` when running `docker compose` in Lab 3 or 4**
+From Lab 3 on, run every command from the repository folder (the one that contains `compose.yaml`), not from
+`labs\lab03`. Run `cd $HOME\Documents\csc894\healthriskai-labs` and try again.
+
+**`docker compose ps` shows kafka or spark-master as `(health: starting)` or `(unhealthy)`**
+Give it a minute and run `docker compose ps` again. If it stays unhealthy, look at the log with
+`docker compose logs kafka` (or `spark-master`). Restart everything with `docker compose down` and then
+`docker compose up -d`.
+
+**`Bind for 127.0.0.1:8081 failed: port is already allocated` (or 4040)**
+Another program, or a leftover container, is using that port. Run `docker ps` and remove leftovers with
+`docker rm -f NAME`. If it's another program, close it and run `docker compose up -d` again.
+
+**`TopicExistsException: Topic 'iqvia_claims' already exists`**
+You created the topic earlier. That's fine: continue with the next step.
+
+**The Kafka connector download fails (`unresolved dependency` or a connection error mentioning `repo1.maven.org`)**
+The first `--kafka` run downloads Spark's Kafka connector from the internet. Check your connection and run the
+command again. Some campus or work networks block it; try another network such as home Wi-Fi.
+
+**Lab 3, Part F: the streaming job never shows the 20 claims**
+The job only reads events that arrive *after* it starts. Wait until window 1 shows **Waiting for claims events**,
+then publish the sample file again from window 2.
+
+**Lab 4: `No records found in topic iqvia_claims_lab4`**
+The topic is empty. Do Part C (create the topic and publish the claims) before running the pipeline. Topics are
+deleted by `docker compose down`, so after a restart you need to repeat Part C.
+
+**Lab 4: the summary shows more than 1,025 input records**
+You published the claims more than once. The checks still pass (Part F explains why). To get the standard numbers,
+delete the topic, then repeat Part C:
+`docker compose exec kafka /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --delete --topic iqvia_claims_lab4`
+
+**A container stops with exit code 137, or Spark reports it is out of memory**
+Docker doesn't have enough memory. Close other apps (browsers use a lot) and check the memory advice under
+"Running the environment check" above. Labs 3 and 4 need about 4–5 GB for Docker.
+
+**Linux: you can't delete files in `data/curated` or `data/dlq`**
+Spark runs as the root user so it can write on every operating system, which makes those files root-owned on
+Linux. Delete them through Docker instead: `docker compose exec spark-master rm -rf data/curated data/dlq`.
