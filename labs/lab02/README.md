@@ -323,9 +323,12 @@ folder**, and read-only. That's a safe habit: never mount your whole drive (for 
 
 1. Open `site/index.html` in a text editor. On Windows run `notepad site\index.html`; on macOS run
    `open -e site/index.html`; or use VS Code.
-2. Find the line `<h1>Docker is working on this computer.</h1>`. Change the text between the tags, for example to
-   `Docker is working on my laptop!`, and save the file.
+2. Find the line `<h1>Docker is working on this computer.</h1>`. Change the text between the tags to
+   `Docker is working on Your Full Name's computer!`, using your own name (for example,
+   `Docker is working on Jordan Smith's computer!`), and save the file.
 3. Refresh <http://localhost:8080>. You should see your new heading straight away, without restarting anything.
+4. **Take a screenshot of the browser window** showing the address bar (`localhost:8080`) and your new heading.
+   It's part of your submission.
 
 ### E4. Stop everything
 
@@ -374,7 +377,8 @@ You should see a list of **PASS** lines ending with **Your computer is ready for
 ## What to submit
 
 1. `lab02-check.txt` from Part F, with no FAIL lines.
-2. A screenshot of <http://localhost:8080> showing **your edited heading** from Part E3.
+2. **One screenshot** from Part E3 of your browser at <http://localhost:8080>, showing the address bar and the
+   heading **Docker is working on Your Full Name's computer!** with your own name.
 
 ---
 
