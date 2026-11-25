@@ -22,5 +22,6 @@ exec /opt/spark/bin/spark-submit \
   --conf spark.jars.ivy=/opt/ivy \
   --conf spark.ui.showConsoleProgress=false \
   --conf spark.sql.shuffle.partitions=4 \
+  --conf spark.sql.debug.maxToStringFields=200 \
   --driver-java-options "-Dlog4j2.configurationFile=file:/opt/healthriskai/bin/log4j2.properties" \
   "${EXTRA[@]}" "$@"

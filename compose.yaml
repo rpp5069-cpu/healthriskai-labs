@@ -10,7 +10,7 @@
 #   A running Spark job:     http://localhost:4040
 #
 # Only this repository folder is shared with the containers, mounted at /opt/healthriskai.
-# Synthetic data only: never put real patient data in this folder.
+# The licensed IQVIA file goes in data/iqvia/ and is never committed; never put real patient records here.
 
 name: healthriskai
 

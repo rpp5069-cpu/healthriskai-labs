@@ -121,29 +121,41 @@ Give it a minute and run `docker compose ps` again. If it stays unhealthy, look 
 Another program, or a leftover container, is using that port. Run `docker ps` and remove leftovers with
 `docker rm -f NAME`. If it's another program, close it and run `docker compose up -d` again.
 
-**`TopicExistsException: Topic 'iqvia_claims' already exists`**
+**`Put the IQVIA CSV file from Canvas in the data/iqvia folder`**
+The scripts can't find the IQVIA file. Download it from Canvas, unzip it if needed, and put the `.csv` file in the
+`data\iqvia` folder inside the repository folder (create the `iqvia` folder if it isn't there). Keep exactly one
+`.csv` file in that folder. Never commit or share this file: it is licensed data.
+
+**`TopicExistsException: Topic 'iqvia_nmta' already exists`**
 You created the topic earlier. That's fine: continue with the next step.
 
 **The Kafka connector download fails (`unresolved dependency` or a connection error mentioning `repo1.maven.org`)**
 The first `--kafka` run downloads Spark's Kafka connector from the internet. Check your connection and run the
 command again. Some campus or work networks block it; try another network such as home Wi-Fi.
 
-**Lab 3, Part F: the streaming job never shows the 20 claims**
-The job only reads events that arrive *after* it starts. Wait until window 1 shows **Waiting for claims events**,
+**Lab 3, Part F: the streaming job never shows the 20 IQVIA rows**
+The job only reads records that arrive *after* it starts. Wait until window 1 shows **Waiting for IQVIA records**,
 then publish the sample file again from window 2.
 
-**Lab 4: `No records found in topic iqvia_claims_lab4`**
-The topic is empty. Do Part C (create the topic and publish the claims) before running the pipeline. Topics are
+**Lab 4: `No such file` for `data/raw/visits/visits_2025-12.jsonl`, or `No files match data/raw/visits/...`**
+Build the patient visits first (Lab 4, Part B, step B3). It takes a few minutes.
+
+**Lab 4: `No records found in Kafka topic patient_visits_lab4`**
+The topic is empty. Do Part C (create the topic and publish the visits) before running the pipeline. Topics are
 deleted by `docker compose down`, so after a restart you need to repeat Part C.
 
-**Lab 4: the summary shows more than 1,025 input records**
-You published the claims more than once. The checks still pass (Part F explains why). To get the standard numbers,
-delete the topic, then repeat Part C:
-`docker compose exec kafka /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --delete --topic iqvia_claims_lab4`
+**Lab 4: the Kafka run shows more than 27,939 input records**
+You published the visits more than once. The checks still pass (every resent visit is caught as a duplicate). To get
+the standard numbers, delete the topic, then repeat Part C:
+`docker compose exec kafka /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --delete --topic patient_visits_lab4`
+
+**Lab 4: Check 3 is missing from the summary**
+Check 3 compares the output with the original IQVIA file, so it only runs for the full run (`--source file`) and
+only when the IQVIA file is in `data\iqvia`.
 
 **A container stops with exit code 137, or Spark reports it is out of memory**
 Docker doesn't have enough memory. Close other apps (browsers use a lot) and check the memory advice under
-"Running the environment check" above. Labs 3 and 4 need about 4–5 GB for Docker.
+"Running the environment check" above. Labs 3 and 4 need about 4–5 GB for Docker. The full Lab 4 run is the largest job; if it fails, close other apps and run it again.
 
 **Linux: you can't delete files in `data/curated` or `data/dlq`**
 Spark runs as the root user so it can write on every operating system, which makes those files root-owned on

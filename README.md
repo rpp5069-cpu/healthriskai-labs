@@ -4,8 +4,9 @@ Lab files for the CSC 894 capstone. Over the semester you build **HealthRiskAI**
 claims into a patient risk score. It uses only free, open-source tools that run together on your own laptop with
 Docker.
 
-> **Synthetic data only.** Nothing in this repository contains real patient data, and you must never load real
-> patient data into these labs, not even "just to test".
+> **Data.** The labs use the IQVIA National Medical and Treatment Audit (NMTA) extract that your instructor shares
+> in Canvas. It is licensed for this course only: keep it in `data/iqvia/` on your own computer, and never commit,
+> upload, or share it. This repository contains no IQVIA data and no real patient data.
 
 ## Labs
 
@@ -13,8 +14,8 @@ Docker.
 |---|---|---|
 | Lab 1 | Watch two short videos on Docker and Docker Compose | `labs/lab01` |
 | Lab 2 | Install Docker on your computer and complete a test run | `labs/lab02` |
-| Lab 3 | Start the course infrastructure; streaming, batch, and hybrid ingestion with Kafka and Spark | `labs/lab03` |
-| Lab 4 | Run a Sprint 0 ETL pipeline: extract from Kafka, transform, mask PHI, and load with Spark | `labs/lab04` |
+| Lab 3 | Start the course infrastructure; streaming, batch, and hybrid ingestion of the IQVIA data with Kafka and Spark | `labs/lab03` |
+| Lab 4 | Run a Sprint 0 ETL pipeline on IQVIA-based patient visits: extract, transform, mask PHI, and load with Spark | `labs/lab04` |
 
 Open each lab from the link your instructor posts in Canvas when the lab opens. Work through the labs in order.
 Each lab's README has step-by-step instructions, the exact commands to type, and what you should see after each
@@ -54,7 +55,9 @@ healthriskai-labs/
 ├── bin/
 │   └── submit.sh       runs a PySpark script on the course Spark cluster
 ├── data/
-│   └── generate_claims.py  creates the synthetic claims data (written to data/raw/)
+│   ├── iqvia/                   put the IQVIA file from Canvas here (never committed)
+│   ├── prepare_iqvia.py         checks the IQVIA file and makes the Lab 3 sample
+│   └── build_patient_visits.py  Lab 4: IQVIA visits with synthetic patient identities
 ├── labs/
 │   ├── lab01/          Lab 1: preparation videos
 │   ├── lab02/          Lab 2: Docker install and test run (compose.yaml, site/)
