@@ -10,3 +10,16 @@ Thumbs.db
 # Secrets and local settings (used from Lab 3 on)
 .env
 secrets/
+
+# Licensed IQVIA data from Canvas: never commit it (only the folder's README is kept)
+data/iqvia/*
+!data/iqvia/README.md
+
+# Lab data created on your computer from the IQVIA file
+data/raw/
+data/curated/
+data/dlq/
+data/lineage/
+
+# Python cache
+__pycache__/
