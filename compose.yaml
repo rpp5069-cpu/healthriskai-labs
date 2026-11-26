@@ -1,13 +1,17 @@
-# HealthRiskAI course infrastructure (Labs 3 and 4): Apache Kafka plus a small Apache Spark cluster.
+# HealthRiskAI course infrastructure: Apache Kafka and a small Apache Spark cluster (Labs 3 and up), plus Apache
+# Hadoop HDFS for the data lake (Labs 5 and up). HDFS is in the "hdfs" profile, so it only starts when you turn that
+# profile on first: in PowerShell run  $env:COMPOSE_PROFILES = "hdfs"   (macOS / Linux: export COMPOSE_PROFILES=hdfs)
 #
 # Run every command from this folder (the repository folder):
 #   docker compose up -d        start everything in the background
-#   docker compose ps           check status (kafka and spark-master should say "healthy")
+#   docker compose ps           check status (kafka and spark-master, plus namenode and datanode from Lab 5, should
+#                               say "healthy")
 #   docker compose down         stop and remove the containers (Kafka topics are deleted too)
 #
 # Web pages (only reachable from your own computer):
 #   Spark cluster:           http://localhost:8081
 #   A running Spark job:     http://localhost:4040
+#   HDFS data lake:          http://localhost:9870
 #
 # Only this repository folder is shared with the containers, mounted at /opt/healthriskai.
 # The licensed IQVIA file goes in data/iqvia/ and is never committed; never put real patient records here.
@@ -21,6 +25,21 @@ x-spark: &spark
   volumes:
     - ./:/opt/healthriskai
     - spark-ivy:/opt/ivy              # Spark's download cache (the Kafka connector), kept between runs
+  networks: [backend]
+
+x-hadoop: &hadoop
+  image: apache/hadoop:3.4.2
+  profiles: ["hdfs"]                                   # started only when the hdfs profile is on (Labs 5 and up)
+  environment: &hadoop-env
+    CORE-SITE.XML_fs.defaultFS: hdfs://namenode:8020
+    HDFS-SITE.XML_dfs.namenode.rpc-address: namenode:8020
+    HDFS-SITE.XML_dfs.namenode.name.dir: file:///tmp/hadoop/dfs/name
+    HDFS-SITE.XML_dfs.datanode.data.dir: file:///tmp/hadoop/dfs/data
+    HDFS-SITE.XML_dfs.replication: "1"                # one DataNode, so one copy of each block
+    HDFS-SITE.XML_dfs.permissions.enabled: "false"    # the labs write as one user; no HDFS permission checks
+    HADOOP_HEAPSIZE_MAX: 512m
+  volumes:
+    - ./:/opt/healthriskai:ro                          # read-only: HDFS only reads files to upload
   networks: [backend]
 
 services:
@@ -77,6 +96,34 @@ services:
     depends_on:
       spark-master:
         condition: service_healthy
+
+  namenode:
+    <<: *hadoop
+    hostname: namenode
+    command: ["hdfs", "namenode"]
+    environment:
+      <<: *hadoop-env
+      ENSURE_NAMENODE_DIR: /tmp/hadoop/dfs/name        # format the new (empty) file system on first start
+    ports:
+      - "127.0.0.1:9870:9870"   # HDFS web page
+    healthcheck:
+      test: ["CMD", "bash", "-c", "</dev/tcp/namenode/9870"]
+      interval: 5s
+      timeout: 3s
+      retries: 24
+
+  datanode:
+    <<: *hadoop
+    hostname: datanode
+    command: ["hdfs", "datanode"]
+    depends_on:
+      namenode:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "bash", "-c", "</dev/tcp/datanode/9864"]
+      interval: 5s
+      timeout: 3s
+      retries: 24
 
 volumes:
   spark-ivy:

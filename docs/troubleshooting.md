@@ -160,3 +160,31 @@ Docker doesn't have enough memory. Close other apps (browsers use a lot) and che
 **Linux: you can't delete files in `data/curated` or `data/dlq`**
 Spark runs as the root user so it can write on every operating system, which makes those files root-owned on
 Linux. Delete them through Docker instead: `docker compose exec spark-master rm -rf data/curated data/dlq`.
+
+## Labs 5 and 6: HDFS
+
+**`no such service: namenode`, or `service "namenode" is not running`**
+HDFS is in the Compose profile `hdfs`. Turn it on in the PowerShell window you're using, then run your command
+again: `$env:COMPOSE_PROFILES = "hdfs"` (macOS / Linux: `export COMPOSE_PROFILES=hdfs`). Do this in every new
+window, and before `docker compose down`, or the HDFS containers keep running.
+
+**`docker compose ps` shows namenode or datanode as `(unhealthy)`, or they keep restarting**
+Look at the log with `docker compose logs namenode` (or `datanode`). Most often Docker is short on memory: close
+other apps, then run `docker compose down` and `docker compose up -d`. Labs 5 and 6 run five services and work best
+with 16 GB of RAM.
+
+**`Name node is in safe mode` when creating folders or uploading**
+HDFS is still starting. Run `docker compose exec namenode hdfs dfsadmin -safemode wait`, then repeat the command.
+
+**A Spark job says `Path does not exist: hdfs://namenode:8020/datalake/...`**
+The raw zone is empty, usually because `docker compose down` removed the HDFS data. Load it again (Lab 5, Part C, or
+Lab 6, Part B3). In Lab 6, run the days in order: Day 2 needs Day 1's output, and Day 5 needs Days 1 to 3.
+
+**Mac with Apple silicon (M1 to M4): HDFS is very slow or won't start**
+The Hadoop image is built for Intel/AMD processors, so Docker Desktop runs it through emulation. In Docker Desktop,
+open **Settings** > **General** and turn on **Use Rosetta for x86_64/amd64 emulation on Apple Silicon**, then
+restart Docker Desktop.
+
+**`Bind for 127.0.0.1:9870 failed: port is already allocated`**
+Another program or a leftover container is using the HDFS web port. Run `docker ps`, remove leftovers with
+`docker rm -f NAME`, and run `docker compose up -d` again.

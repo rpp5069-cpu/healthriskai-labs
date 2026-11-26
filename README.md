@@ -16,6 +16,8 @@ Docker.
 | Lab 2 | Install Docker on your computer and complete a test run | `labs/lab02` |
 | Lab 3 | Start the course infrastructure; streaming, batch, and hybrid ingestion of the IQVIA data with Kafka and Spark | `labs/lab03` |
 | Lab 4 | Run a Sprint 0 ETL pipeline on IQVIA-based patient visits: extract, transform, mask PHI, and load with Spark | `labs/lab04` |
+| Lab 5 | Set up the HDFS data lake, profile the raw IQVIA data, and write a Sprint 1 plan | `labs/lab05` |
+| Lab 6 | Execute Sprint 1: clean, check compliance, enrich, stream, and test the pipeline end to end | `labs/lab06` |
 
 Open each lab from the link your instructor posts in Canvas when the lab opens. Work through the labs in order.
 Each lab's README has step-by-step instructions, the exact commands to type, and what you should see after each
@@ -51,7 +53,7 @@ You need these files on your computer from Lab 2 on. Pick one way:
 
 ```
 healthriskai-labs/
-├── compose.yaml        the course infrastructure (Kafka and Spark), used from Lab 3 on
+├── compose.yaml        the course infrastructure: Kafka and Spark from Lab 3 on, HDFS from Lab 5 on
 ├── bin/
 │   └── submit.sh       runs a PySpark script on the course Spark cluster
 ├── data/
@@ -62,7 +64,9 @@ healthriskai-labs/
 │   ├── lab01/          Lab 1: preparation videos
 │   ├── lab02/          Lab 2: Docker install and test run (compose.yaml, site/)
 │   ├── lab03/          Lab 3: Kafka and Spark (streaming, batch, and hybrid ingestion)
-│   └── lab04/          Lab 4: Sprint 0 ETL pipeline
+│   ├── lab04/          Lab 4: Sprint 0 ETL pipeline
+│   ├── lab05/          Lab 5: HDFS data lake, discovery profile, Sprint 1 plan template
+│   └── lab06/          Lab 6: Sprint 1 jobs (Days 1 to 5)
 ├── scripts/
 │   ├── check-docker.ps1   environment check for Windows
 │   └── check-docker.sh    environment check for macOS and Linux

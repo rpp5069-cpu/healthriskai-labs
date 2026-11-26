@@ -14,6 +14,8 @@ state, a YES/NO category, and care setting. It contains no patient-level records
 | `raw/visits/` | `build_patient_visits.py` | patient visits with **synthetic** patient identities | Lab 4 |
 | `curated/` | Lab 4 ETL | clean, masked visits in Parquet format, one folder per year | Lab 4 |
 | `dlq/` | Lab 4 ETL | the dead-letter zone: rejected visit IDs and reasons, no patient details | Lab 4 |
+| `raw/nmta_stream100.jsonl` | Lab 6 Day 3 | 100 raw IQVIA rows for the streaming test | Lab 6 |
+| `lineage/` | Lab 6 jobs | the lineage (audit) log, one line per pipeline step | Lab 6 and later |
 
 Everything except `iqvia/README.md` is created on your computer and is not stored in the repository.
 
@@ -29,3 +31,9 @@ The script also plants a fixed set of data-quality problems for Lab 4: 500 dupli
 `Mon YYYY`. Every run creates exactly the same records.
 
 From Lab 5 on, the labs work with the IQVIA data at the aggregate level, without any patient identifiers.
+
+## The HDFS data lake (Labs 5 and up)
+
+From Lab 5 on, the pipeline's data lives in HDFS, not in this folder: `/datalake/raw`, `staging`, `curated`,
+`dead-letter`, and `profiles`. Browse it at <http://localhost:9870> (**Utilities** > **Browse the file system**).
+HDFS data is removed by `docker compose down`; each lab shows how to load the raw zone again.
